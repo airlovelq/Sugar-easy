@@ -1,0 +1,1 @@
+docker build -t sugar/trainer:latest -f ./scripts/train.dockerfile $PWD 

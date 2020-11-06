@@ -1,0 +1,1 @@
+docker build -t sugar/appserver:latest -f ./scripts/predictor.dockerfile $PWD 
