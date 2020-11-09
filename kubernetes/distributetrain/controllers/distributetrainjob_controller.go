@@ -86,6 +86,7 @@ func (r *DistributeTrainJobReconciler) Reconcile(req ctrl.Request) (ctrl.Result,
 
 	if err = r.finalize(ctx, disTrainJob); err != nil {
 		return ctrl.Result{}, err
+		// return ctrl.Result{}, err
 	}
 	if r.getService(ctx, req.NamespacedName) == nil {
 		r.Log.Info("Service Nod Found, Create Service")
@@ -358,10 +359,10 @@ func (r *DistributeTrainJobReconciler) createPod(ctx context.Context, job *sugar
 							Name:  "VALIDATE_DATASET",
 							Value: job.Spec.ValidateDataset,
 						},
-						{
-							Name:  "MODEL_SAVE_CHECKPOINT_PATH",
-							Value: job.Spec.ModelSaveCheckpointPath,
-						},
+						// {
+						// 	Name:  "MODEL_SAVE_CHECKPOINT_PATH",
+						// 	Value: job.Spec.ModelSaveCheckpointPath,
+						// },
 						{
 							Name:  "MAX_TRIALS",
 							Value: strconv.Itoa(int(job.Spec.MaxTrials)),
@@ -385,6 +386,10 @@ func (r *DistributeTrainJobReconciler) createPod(ctx context.Context, job *sugar
 						{
 							Name:  "DistributeTrainJobIPs",
 							Value: ipsStr,
+						},
+						{
+							Name:  "WORKER_NAME",
+							Value: job.Name,
 						},
 					},
 					VolumeMounts: []corev1.VolumeMount{
@@ -413,6 +418,11 @@ func (r *DistributeTrainJobReconciler) createPod(ctx context.Context, job *sugar
 							Name:      "checkpointfolder",
 							MountPath: "/root/checkpoint",
 							ReadOnly:  false,
+						},
+						{
+							Name: "log",
+							MountPath: "/root/logs",
+							ReadOnly:false,
 						},
 					},
 				},

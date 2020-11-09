@@ -1,1 +1,4 @@
 tensorflow==2.0.0b1
+scikit-learn==0.23.2
+msgpack==1.0.0
+Pillow==5.3.0

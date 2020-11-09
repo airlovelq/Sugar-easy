@@ -1,13 +1,13 @@
 apiVersion: sugar.sugar.com/v1
 kind: DistributeTrainJob
 metadata:
-  name: distributetrainjob-sample
+  name: distributetrainjob-sample1
 spec:
   # Add fields here
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      name: distributetrainjob-sample
+      name: distributetrainjob-sample1
   ports:
   - port: 90
     name: test
@@ -46,12 +46,14 @@ spec:
       path: /home/luqin/modelframetest/checkpoint
       # this field is optional
       type: Directory
-  modelsavepath: vgg16params
-  modelfile: vgg16
-  modelclass: Vgg16Model
-  modelcheckpoint: checkpoint
+  modelsavepath: lenet5_params
+  modelfile: model
+  modelclass: LeNet5
+  modelcheckpoint: ""
   modelparams: "{\"image_size\": 36}"
-  trainparams: "{\"image_size\": 36, \"batch_size\": 18}"
-  traindataset: fashion_mnist_for_image_classification_train.zip
-  validatedataset: fashion_mnist_for_image_classification_train.zip
-  modelsavecheckpointpath: ckptpath
+  trainparams: "{\"max_epochs\": 1, \"batch_size\": 18, \"learning_rate\": 0.0005}"
+  traindataset: fashion_mnist_train
+  validatedataset: fashion_mnist_train
+  destscore: "0.8"
+  maxtrials: 1
+  useautoml: 0

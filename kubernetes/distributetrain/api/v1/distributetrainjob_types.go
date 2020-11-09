@@ -88,7 +88,7 @@ type DistributeTrainJobSpec struct {
 	ValidateDataset string `json:"validatedataset"`
 
 	//
-	ModelSaveCheckpointPath string `json:"modelsavecheckpointpath"`
+	// ModelSaveCheckpointPath string `json:"modelsavecheckpointpath"`
 
 	//
 	UseAutoml int32 `json:"useautoml"`

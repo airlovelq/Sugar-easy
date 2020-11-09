@@ -4,11 +4,11 @@ metadata:
   name: appserver-sample2
 spec:
   # Add fields here
-  replicasmin: 2
+  replicasmin: 1
   replicasmax: 6
   modelfile: "model"
-  modelparam: "param"
-  modelclass: "Model"
+  modelparam: "lenet5_params"
+  modelclass: "LeNet5"
   port:
     targetPort: 7002
     nodePort: 9002
@@ -17,14 +17,14 @@ spec:
     name: "modelfolder"
     hostPath:
       # directory location on host
-      path: /home/luqin/SugarAppServer/test_model
+      path: /home/luqin/modelframetest/model
       # this field is optional
       type: Directory
   modelparamvolume:
     name: "modelparamfolder"
     hostPath:
       # directory location on host
-      path: /home/luqin/SugarAppServer/test_model_param
+      path: /home/luqin/modelframetest/params
       # this field is optional
       type: Directory
   metrics:

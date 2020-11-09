@@ -3577,8 +3577,6 @@ spec:
               required:
               - name
               type: object
-            modelsavecheckpointpath:
-              type: string
             modelsavepath:
               type: string
             modelvolume:
@@ -6070,7 +6068,6 @@ spec:
           - modelfile
           - modelparams
           - modelparamvolume
-          - modelsavecheckpointpath
           - modelsavepath
           - modelvolume
           - traindataset

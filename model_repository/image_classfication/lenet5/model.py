@@ -43,8 +43,9 @@ import csv
 import tempfile
 import zipfile
 from utils import load_image_classification_dataset
+from utils import logger
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 class LeNet5(object):
     '''

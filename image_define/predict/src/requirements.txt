@@ -1,2 +1,3 @@
 Flask==1.0.3
 Flask-Cors==3.0.8
+pandas==1.1.4

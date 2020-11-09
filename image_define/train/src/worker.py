@@ -1,32 +1,33 @@
 import os
 import json
 # from utils import load_model_class
-# from log import logger
-from importlib import import_module
+from utils import logger
+from utils import load_model_class
+# from importlib import import_module
 import logging
 from hyperopt import fmin, tpe, hp, partial
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 class ModelType(object):
     IMAGE_CLASSIFICATION = 'IMAGE_CLASSIFICATION'
     TABLE_CLASSIFICATION = 'TABLE_CLASSIFICATION'
 
-def load_model_class(module, model_class):
-    clazz = None
-    try:
-        # Import model file as module
-        mod = import_module(module)
-        # Extract model class from module
-        clazz = getattr(mod, model_class)
-    except Exception as e:
-        raise e
-        # logger.log(logging.INFO, 'Getting Model Class Failed')
-        # logger.log(logging.ERROR, repr(e))
-        # raise e
-    finally:
-        pass
-    return clazz
+# def load_model_class(module, model_class):
+#     clazz = None
+#     try:
+#         # Import model file as module
+#         mod = import_module(module)
+#         # Extract model class from module
+#         clazz = getattr(mod, model_class)
+#     except Exception as e:
+#         raise e
+#         # logger.log(logging.INFO, 'Getting Model Class Failed')
+#         # logger.log(logging.ERROR, repr(e))
+#         # raise e
+#     finally:
+#         pass
+#     return clazz
 
 class TrainWorker(object):
     def __init__(self, **params):
@@ -64,7 +65,7 @@ class TrainWorker(object):
     def _train_once(self, **params):
         logger.log(logging.INFO, 'Train Params is {}'.format(params))
         model_inst = self._model_class(**self._model_params)
-        if self._model_ckpt is not None:
+        if self._model_ckpt:
             logger.log(logging.INFO, 'Loading Checkpoint')
             model_inst.load(self._model_ckpt)
         self._trial_count += 1
@@ -75,7 +76,11 @@ class TrainWorker(object):
         res_eval = model_inst.evaluate(self._validate_dataset)
         logger.log(logging.INFO, 'Evaluating Finished')
         logger.log(logging.INFO, 'Score is {}'.format(res_eval))
-        loss = res_eval[0]
+        loss = None
+        if isinstance(res_eval, tuple) or isinstance(res_eval, list):
+            loss = res_eval[0]
+        else:
+            loss = res_eval
         if self._best_loss is None or self._best_loss > loss:
             logger.log(logging.INFO, 'Start Saving')
             model_inst.save(self._save_param_path)
@@ -135,7 +140,7 @@ class TrainWorker(object):
         self._model_class = model_class
 
     def _load_model_checkpoint(self):
-        self._model_ckpt = None if os.environ.get('MODEL_CHECKPOINT', None) is None else './params/' + os.environ.get('MODEL_CHECKPOINT', None)
+        self._model_ckpt = '' if not os.environ.get('MODEL_CHECKPOINT', '') else './params/' + os.environ.get('MODEL_CHECKPOINT', '')
 
     def _load_save_path(self):
         self._save_param_path = './params/'+os.environ.get('MODEL_SAVE_PATH')
