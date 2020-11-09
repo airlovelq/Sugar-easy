@@ -1,0 +1,24 @@
+# permissions for end users to edit appservers.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: appserver-editor-role
+rules:
+- apiGroups:
+  - sugar.sugar.com
+  resources:
+  - appservers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - sugar.sugar.com
+  resources:
+  - appservers/status
+  verbs:
+  - get

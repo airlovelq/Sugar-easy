@@ -1,0 +1,9 @@
+domain: sugar.com
+layout: go.kubebuilder.io/v2
+projectName: sugarappserver
+repo: sugar.com
+resources:
+- group: sugar
+  kind: AppServer
+  version: v1
+version: 3-alpha

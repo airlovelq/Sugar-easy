@@ -1,0 +1,23 @@
+apiVersion: sugar.sugar.com/v1
+kind: DistributeTrainJob
+metadata:
+  name: distributetrainjob-test-sample
+spec:
+  # Add fields here
+  replicas: 2
+  selector:
+    matchLabels:
+      name: distributetrainjob-test-sample
+  template:
+    metadata:
+      labels:
+        name: distributetrainjob-test-sample
+    spec:
+      containers:
+      - name: distributetrainjob-test-sample
+        image: test-distribute-train-image:0.0.1
+        # command: ["sleep", "1000000"]
+        command: ["python3", "/root/test.py"]
+  ports:
+  - port: 9064
+    name: test

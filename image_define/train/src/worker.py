@@ -7,8 +7,10 @@ import logging
 from hyperopt import fmin, tpe, hp, partial
 
 logger = logging.getLogger(__name__)
+
 class ModelType(object):
     IMAGE_CLASSIFICATION = 'IMAGE_CLASSIFICATION'
+    TABLE_CLASSIFICATION = 'TABLE_CLASSIFICATION'
 
 def load_model_class(module, model_class):
     clazz = None

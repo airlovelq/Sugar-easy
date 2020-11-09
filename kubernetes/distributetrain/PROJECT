@@ -1,0 +1,9 @@
+domain: sugar.com
+layout: go.kubebuilder.io/v2
+projectName: distributetrainjob
+repo: DistributeTrainJob
+resources:
+- group: sugar
+  kind: DistributeTrainJob
+  version: v1
+version: 3-alpha

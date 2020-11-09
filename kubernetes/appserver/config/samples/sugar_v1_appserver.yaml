@@ -1,0 +1,42 @@
+apiVersion: sugar.sugar.com/v1
+kind: AppServer
+metadata:
+  name: appserver-sample2
+spec:
+  # Add fields here
+  replicasmin: 2
+  replicasmax: 6
+  modelfile: "model"
+  modelparam: "param"
+  modelclass: "Model"
+  port:
+    targetPort: 7002
+    nodePort: 9002
+    port: 9002
+  modelvolume:
+    name: "modelfolder"
+    hostPath:
+      # directory location on host
+      path: /home/luqin/SugarAppServer/test_model
+      # this field is optional
+      type: Directory
+  modelparamvolume:
+    name: "modelparamfolder"
+    hostPath:
+      # directory location on host
+      path: /home/luqin/SugarAppServer/test_model_param
+      # this field is optional
+      type: Directory
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 8
+  resources:
+    requests:
+      cpu: 1
+      memory: 250Mi
+
+

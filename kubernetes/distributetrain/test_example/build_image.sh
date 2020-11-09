@@ -1,0 +1,1 @@
+docker build -t test-distribute-train-image:0.0.1 -f ./test_example/example.dockerfile $PWD

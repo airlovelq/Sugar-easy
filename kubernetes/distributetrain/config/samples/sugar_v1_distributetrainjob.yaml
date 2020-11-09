@@ -1,0 +1,57 @@
+apiVersion: sugar.sugar.com/v1
+kind: DistributeTrainJob
+metadata:
+  name: distributetrainjob-sample
+spec:
+  # Add fields here
+  replicas: 2
+  selector:
+    matchLabels:
+      name: distributetrainjob-sample
+  ports:
+  - port: 90
+    name: test
+  modelvolume:
+    name: modelfolder
+    hostPath:
+      # directory location on host
+      path: /home/luqin/modelframetest/model
+      # this field is optional
+      type: Directory
+  modelparamvolume:
+    name: modelparamfolder
+    hostPath:
+      # directory location on host
+      path: /home/luqin/modelframetest/params
+      # this field is optional
+      type: Directory
+  trainvolume:
+    name: trainfolder
+    hostPath:
+      # directory location on host
+      path: /home/luqin/modelframetest/train
+      # this field is optional
+      type: Directory
+  datasetvolume:
+    name: datasetfolder
+    hostPath:
+      # directory location on host
+      path: /home/luqin/modelframetest/dataset
+      # this field is optional
+      type: Directory
+  checkpointvolume:
+    name: checkpointfolder
+    hostPath:
+      # directory location on host
+      path: /home/luqin/modelframetest/checkpoint
+      # this field is optional
+      type: Directory
+  modelsavepath: vgg16params
+  modelfile: vgg16
+  modelclass: Vgg16Model
+  modelcheckpoint: checkpoint
+  modelparams: "{\"image_size\": 36}"
+  trainparams: "{\"image_size\": 36, \"batch_size\": 18}"
+  traindataset: fashion_mnist_for_image_classification_train.zip
+  validatedataset: fashion_mnist_for_image_classification_train.zip
+  modelsavecheckpointpath: ckptpath

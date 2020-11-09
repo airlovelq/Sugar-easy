@@ -1,0 +1,24 @@
+# permissions for end users to edit distributetrainjobs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: distributetrainjob-editor-role
+rules:
+- apiGroups:
+  - sugar.sugar.com
+  resources:
+  - distributetrainjobs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - sugar.sugar.com
+  resources:
+  - distributetrainjobs/status
+  verbs:
+  - get
