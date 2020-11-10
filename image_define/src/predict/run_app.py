@@ -7,9 +7,15 @@ import threading
 from predictor import PredictWorker
 
 install_command = 'pip3 install -r ./model/requirements.txt'
-exit_code = os.system(install_command)
-if exit_code != 0: 
-    raise Exception('Install command gave non-zero exit code: "{}"'.format(install_command))
+try_count = 0
+while True:
+    exit_code = os.system(install_command)
+    if exit_code == 0:
+        break
+    else:
+        try_count += 1
+        if try_count == 10: 
+            raise Exception('Install command gave non-zero exit code: "{}"'.format(install_command))
 
 predictor = PredictWorker()
 mutex = threading.Lock()
