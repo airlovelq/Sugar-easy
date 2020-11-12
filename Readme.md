@@ -7,9 +7,9 @@
 
 主要思路为开发kubernetes crd controller，并定义自定义的训练和预测服务docker镜像，来控制训练和部署流程，使整个过程容器化。
 整个工程按文件夹阐述，可分为以下几个部分：
-1. image_define包含所需的docker镜像定义，包括训练镜像和预测服务镜像
-2. kubernetes包含crd定义及其代码，配置文件
-3. model_repository作为模型仓库，包含已封装的部分模型
+*  image_define包含所需的docker镜像定义，包括训练镜像和预测服务镜像
+*  kubernetes包含crd定义及其代码，配置文件
+*  model_repository作为模型仓库，包含已封装的部分模型
 
 #### 安装教程
 
@@ -22,42 +22,42 @@
 #### 使用说明
 
 1.  预测服务样例见kubernetes/appserver/config/samples/sugar_v1_appserver.yaml，以下是各字段说明：
-    replicasmin                 #最小副本数
-    replicasmax                 #最大副本数
-    modelfile                   #模型文件名
-    modelparam                  #模型加载的参数，文件夹或文件（checkpoint）
-    modelclass                  #模型文件中的模型类名
-    port                        #端口配置（参照kubernetes service端口配置）
-    modelvolume                 #模型文件所在volume（参照kubernetes volume配置）
-    modelparamvolume            #模型加载的参数所在volume（参照kubernetes volume配置）
-    resources                   #每个pod的资源配置（参照kubernetes resources配置）
-    metrics                     #kubernetes HPA弹性伸缩监控指标配置（参照kubernetes metrics配置）
+    * replicasmin                 #最小副本数
+    * replicasmax                 #最大副本数
+    * modelfile                   #模型文件名
+    * modelparam                  #模型加载的参数，文件夹或文件（checkpoint）
+    * modelclass                  #模型文件中的模型类名
+    * port                        #端口配置（参照kubernetes service端口配置）
+    * modelvolume                 #模型文件所在volume（参照kubernetes volume配置）
+    * modelparamvolume            #模型加载的参数所在volume（参照kubernetes volume配置）
+    * resources                   #每个pod的资源配置（参照kubernetes resources配置）
+    * metrics                     #kubernetes HPA弹性伸缩监控指标配置（参照kubernetes metrics配置）
 2.  训练样例见kubernetes/distributetrain/config/samples/sugar_v1_distributetrainjob.yaml，以下是各字段说明：
-    replicas                    #副本数
-    selector                    #参照kubernetes selector
-    ports                       #分布式训练过程中使用的通信端口
-    modelvolume                 #模型文件所在volume（参照kubernetes volume配置）
-    modelparamvolume            #模型加载的参数所在volume（参照kubernetes volume配置）
-    datasetvolume               #数据集所在volume（参照kubernetes volume配置）
-    logvolume                   #日志所在volume（参照kubernetes volume配置）
-    modelsavepath               #模型训练完成参数的保存路径，文件名或文件夹
-    modelfile                   #模型文件名
-    modelclass                  #模型文件中的模型类名
-    modelcheckpoint             #模型的预训练参数  
-    modelparams                 #模型的初始化参数
-    trainparams                 #模型的可变训练参数设置，对于不启用自动调参的情况，每个value为单个值，对于启动自动调参的情况，每个value为列表或元祖
-    traindataset                #训练数据集
-    validatedataset             #验证数据集
-    destscore                   #目标得分
-    maxtrials                   #最大尝试次数，对于已启用自动调参的任务需要设置
-    useautoml                   #是否使用自动调参
+    * replicas                    #副本数
+    * selector                    #参照kubernetes selector
+    * ports                       #分布式训练过程中使用的通信端口
+    * modelvolume                 #模型文件所在volume（参照kubernetes volume配置）
+    * modelparamvolume            #模型加载的参数所在volume（参照kubernetes volume配置）
+    * datasetvolume               #数据集所在volume（参照kubernetes volume配置）
+    * logvolume                   #日志所在volume（参照kubernetes volume配置）
+    * modelsavepath               #模型训练完成参数的保存路径，文件名或文件夹
+    * modelfile                   #模型文件名
+    * modelclass                  #模型文件中的模型类名
+    * modelcheckpoint             #模型的预训练参数  
+    * modelparams                 #模型的初始化参数
+    * trainparams                 #模型的可变训练参数设置，对于不启用自动调参的情况，每个value为单个值，对于启动自动调参的情况，每个value为列表或元祖
+    * traindataset                #训练数据集
+    * validatedataset             #验证数据集
+    * destscore                   #目标得分
+    * maxtrials                   #最大尝试次数，对于已启用自动调参的任务需要设置
+    * useautoml                   #是否使用自动调参
 3.  模型开发说明，每个模型类需实现以下类函数：
-    train(self, dataset_path, **train_args)   训练函数
-    evaluate(self, dataset_path)              评估函数
-    predict(self, query)                      预测函数
-    save(self, path)                          保存训练（参数）结果
-    load(self, path)                          加载模型训练（参数）结果
-    destroy(self)                             模型结束运行时某些必要的资源释放
+    * train(self, dataset_path, **train_args)   训练函数
+    * evaluate(self, dataset_path)              评估函数
+    * predict(self, query)                      预测函数
+    * save(self, path)                          保存训练（参数）结果
+    * load(self, path)                          加载模型训练（参数）结果
+    * destroy(self)                             模型结束运行时某些必要的资源释放
 
 
 #### 参与贡献
