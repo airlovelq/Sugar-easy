@@ -505,7 +505,7 @@ func (r *AppServerReconciler) finalize(ctx context.Context, server *sugarv1.AppS
 		}
 		return true, nil
 	}
-	return false, nil
+	// return false, nil
 }
 
 func containsString(slice []string, s string) bool {
