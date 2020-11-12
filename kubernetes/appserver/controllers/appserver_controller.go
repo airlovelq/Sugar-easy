@@ -232,7 +232,7 @@ func (r *AppServerReconciler) createDeployment(ctx context.Context, server *suga
 									Value: server.Spec.ModelClass,
 								},
 								{
-									Name:  "MODEL_PARAM_FILE",
+									Name:  "MODEL_PARAM",
 									Value: server.Spec.ModelParam,
 								},
 								{
@@ -282,7 +282,7 @@ func (r *AppServerReconciler) updateDeployment(ctx context.Context, server *suga
 					bupdate = true
 					deploy.Spec.Template.Spec.Containers[index].Env[j].Value = server.Spec.ModelFile
 				}
-			case "MODEL_PARAM_FILE":
+			case "MODEL_PARAM":
 				if deploy.Spec.Template.Spec.Containers[index].Env[j].Value != server.Spec.ModelParam {
 					bupdate = true
 					deploy.Spec.Template.Spec.Containers[index].Env[j].Value = server.Spec.ModelParam

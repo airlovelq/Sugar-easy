@@ -13,7 +13,7 @@ class PredictWorker(object):
     def _get_model_inst(self):
         clazz = load_model_class('model.'+os.environ.get('MODEL_FILE', 'model'), os.environ.get('MODEL_CLASS','Model'))
         self._model_inst = clazz()
-        self._model_inst.load('./params/'+os.environ.get('MODEL_PARAM_FILE', 'param'))
+        self._model_inst.load('./params/'+os.environ.get('MODEL_PARAM', 'param'))
 
     def predict(self, query):
         result = self._model_inst.predict(query)
