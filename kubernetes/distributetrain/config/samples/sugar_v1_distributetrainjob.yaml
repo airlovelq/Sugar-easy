@@ -25,13 +25,13 @@ spec:
       path: /home/luqin/modelframetest/params
       # this field is optional
       type: Directory
-  trainvolume:
-    name: trainfolder
-    hostPath:
-      # directory location on host
-      path: /home/luqin/modelframetest/train
-      # this field is optional
-      type: Directory
+  # trainvolume:
+  #   name: trainfolder
+  #   hostPath:
+  #     # directory location on host
+  #     path: /home/luqin/modelframetest/train
+  #     # this field is optional
+  #     type: Directory
   datasetvolume:
     name: datasetfolder
     hostPath:
@@ -39,11 +39,11 @@ spec:
       path: /home/luqin/modelframetest/dataset
       # this field is optional
       type: Directory
-  checkpointvolume:
-    name: checkpointfolder
+  logvolume:
+    name: logfolder
     hostPath:
       # directory location on host
-      path: /home/luqin/modelframetest/checkpoint
+      path: /home/luqin/modelframetest/logs
       # this field is optional
       type: Directory
   modelsavepath: lenet5_params

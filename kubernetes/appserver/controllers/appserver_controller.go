@@ -239,6 +239,10 @@ func (r *AppServerReconciler) createDeployment(ctx context.Context, server *suga
 									Name:  "APP_PORT",
 									Value: server.Spec.Port.TargetPort.String(),
 								},
+								{
+									Name:  "WORKER_NAME",
+									Value: server.Name,
+								},
 							},
 						},
 					},

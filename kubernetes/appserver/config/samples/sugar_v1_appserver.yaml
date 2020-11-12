@@ -37,6 +37,6 @@ spec:
   resources:
     requests:
       cpu: 1
-      memory: 250Mi
+      memory: 2000Mi
 
 

@@ -376,15 +376,15 @@ func (r *DistributeTrainJobReconciler) createPod(ctx context.Context, job *sugar
 							Value: strconv.Itoa(int(job.Spec.UseAutoml)),
 						},
 						{
-							Name:  "DistributeTrainJobID",
+							Name:  "DISTRIBUTE_TRAINJOB_ID",
 							Value: strconv.Itoa(no),
 						},
 						{
-							Name:  "DistributeTrainJobPorts",
+							Name:  "DISTRIBUTE_TRAINJOB_PORTS",
 							Value: portsStr,
 						},
 						{
-							Name:  "DistributeTrainJobIPs",
+							Name:  "DISTRIBUTE_TRAINJOB_IPS",
 							Value: ipsStr,
 						},
 						{
@@ -404,25 +404,25 @@ func (r *DistributeTrainJobReconciler) createPod(ctx context.Context, job *sugar
 							MountPath: "/root/params",
 							ReadOnly:  false,
 						},
-						{
-							Name:      "trainfolder",
-							MountPath: "/root/train",
-							ReadOnly:  false,
-						},
+						// {
+						// 	Name:      "trainfolder",
+						// 	MountPath: "/root/train",
+						// 	ReadOnly:  false,
+						// },
 						{
 							Name:      "datasetfolder",
 							MountPath: "/root/dataset",
 							ReadOnly:  false,
 						},
+						// {
+						// 	Name:      "checkpointfolder",
+						// 	MountPath: "/root/checkpoint",
+						// 	ReadOnly:  false,
+						// },
 						{
-							Name:      "checkpointfolder",
-							MountPath: "/root/checkpoint",
-							ReadOnly:  false,
-						},
-						{
-							Name: "log",
+							Name:      "logfolder",
 							MountPath: "/root/logs",
-							ReadOnly:false,
+							ReadOnly:  false,
 						},
 					},
 				},
@@ -431,9 +431,10 @@ func (r *DistributeTrainJobReconciler) createPod(ctx context.Context, job *sugar
 			Volumes: []corev1.Volume{
 				job.Spec.ModelParamVolume,
 				job.Spec.ModelVolume,
-				job.Spec.TrainParamVolume,
+				// job.Spec.TrainParamVolume,
 				job.Spec.DatasetVolume,
-				job.Spec.CheckpointVolume,
+				job.Spec.LogVolume,
+				// job.Spec.CheckpointVolume,
 			},
 		},
 

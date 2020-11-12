@@ -46,10 +46,10 @@ type DistributeTrainJobSpec struct {
 	ModelParamVolume apiv1.Volume `json:"modelparamvolume"`
 
 	// Volume For Train
-	TrainParamVolume apiv1.Volume `json:"trainvolume"`
+	// TrainParamVolume apiv1.Volume `json:"trainvolume"`
 
 	// Volume For Checkpoint
-	CheckpointVolume apiv1.Volume `json:"checkpointvolume"`
+	LogVolume apiv1.Volume `json:"logvolume"`
 
 	// Volume For Dataset
 	DatasetVolume apiv1.Volume `json:"datasetvolume"`
