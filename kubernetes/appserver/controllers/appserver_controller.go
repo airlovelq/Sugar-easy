@@ -228,6 +228,10 @@ func (r *AppServerReconciler) createDeployment(ctx context.Context, server *suga
 									Value: server.Spec.ModelFile,
 								},
 								{
+									Name: "MODEL_FOLDER",
+									Value: server.Spec.ModelFolder,
+								},
+								{
 									Name:  "MODEL_CLASS",
 									Value: server.Spec.ModelClass,
 								},

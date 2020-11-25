@@ -40,6 +40,9 @@ type AppServerSpec struct {
 	// +optional
 	ReplicasMax *int32 `json:"replicasmax,omitempty"`
 
+	//
+	ModelFolder string `json:"modelfolder"`
+
 	// Model File Name, exclude .py
 	ModelFile string `json:"modelfile"`
 

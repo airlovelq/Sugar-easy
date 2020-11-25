@@ -332,6 +332,10 @@ func (r *DistributeTrainJobReconciler) createPod(ctx context.Context, job *sugar
 							Value: job.Spec.ModelSavePath,
 						},
 						{
+							Name:  "MODEL_FOLDER",
+							Value: job.Spec.ModelFolder,
+						},
+						{
 							Name:  "MODEL_FILE",
 							Value: job.Spec.ModelFile,
 						},

@@ -1,7 +1,7 @@
 from worker import TrainWorker
 import os
 
-install_command = 'pip3 install -r ./model/requirements.txt'
+install_command = 'pip3 install -r ./model/'+os.environ.get('MODEL_FOLDER','model')+'/requirements.txt'
 try_count = 0
 while True:
     exit_code = os.system(install_command)

@@ -11,7 +11,7 @@ class PredictWorker(object):
         self._get_model_inst()
 
     def _get_model_inst(self):
-        clazz = load_model_class('model.'+os.environ.get('MODEL_FILE', 'model'), os.environ.get('MODEL_CLASS','Model'))
+        clazz = load_model_class('model.'+os.environ.get('MODEL_FOLDER', 'model')+'.'+os.environ.get('MODEL_FILE', 'model'), os.environ.get('MODEL_CLASS','Model'))
         self._model_inst = clazz()
         self._model_inst.load('./params/'+os.environ.get('MODEL_PARAM', 'param'))
 

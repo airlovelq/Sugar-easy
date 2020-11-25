@@ -66,6 +66,9 @@ type DistributeTrainJobSpec struct {
 	//
 	ModelSavePath string `json:"modelsavepath"`
 
+	//ModelFolder
+	ModelFolder string `json:"modelfolder"`
+
 	//ModelFile
 	ModelFile string `json:"modelfile"`
 

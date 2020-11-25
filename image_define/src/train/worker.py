@@ -136,7 +136,7 @@ class TrainWorker(object):
         self._validate_dataset = './dataset/'+os.environ.get('VALIDATE_DATASET', None)
 
     def _load_model(self):
-        model_class = load_model_class('model.'+os.environ.get('MODEL_FILE', 'model'), os.environ.get('MODEL_CLASS','Model'))
+        model_class = load_model_class('model.'+os.environ.get('MODEL_FOLDER','model')+'.'+os.environ.get('MODEL_FILE', 'model'), os.environ.get('MODEL_CLASS','Model'))
         self._model_class = model_class
 
     def _load_model_checkpoint(self):
