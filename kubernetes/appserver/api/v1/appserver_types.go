@@ -66,6 +66,9 @@ type AppServerSpec struct {
 
 	// Resources
 	Resources apiv1.ResourceRequirements `json:"resources,omitempty" protobuf:"bytes,8,opt,name=resources"`
+
+	//
+	StatusInformHook *string `json:"statusinformhook"`
 }
 
 // DistributeTrainJobStatusState 声明

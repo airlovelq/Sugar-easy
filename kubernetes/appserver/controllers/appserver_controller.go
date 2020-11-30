@@ -21,8 +21,12 @@ import (
 	"context"
 	"crypto/sha1"
 	"encoding/gob"
+	"encoding/json"
 	"fmt"
+	"net"
+	"net/http"
 	"reflect"
+	"time"
 
 	"strings"
 
@@ -61,6 +65,7 @@ func (r *AppServerReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 	r.Log.Info("Get App Server Success")
+	defer r.inform(ctx, server)
 	var bcontinue bool = false
 	if bcontinue, err = r.finalize(ctx, server); bcontinue || err != nil {
 		return ctrl.Result{}, err
@@ -146,6 +151,42 @@ func (r *AppServerReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	return ctrl.Result{}, nil
 }
 
+const (
+	MaxIdleConns        int = 100
+	MaxIdleConnsPerHost int = 100
+	IdleConnTimeout     int = 90
+)
+
+// createHTTPClient for connection re-use
+func createHTTPClient() *http.Client {
+	client := &http.Client{
+		Transport: &http.Transport{
+			Proxy: http.ProxyFromEnvironment,
+			DialContext: (&net.Dialer{
+				Timeout:   60 * time.Second,
+				KeepAlive: 60 * time.Second,
+			}).DialContext,
+			MaxIdleConns:        MaxIdleConns,
+			MaxIdleConnsPerHost: MaxIdleConnsPerHost,
+			IdleConnTimeout:     time.Duration(IdleConnTimeout) * time.Second,
+		},
+
+		Timeout: 60 * time.Second,
+	}
+	return client
+}
+
+func (r *AppServerReconciler) inform(ctx context.Context, appserver *sugarv1.AppServer) {
+	if appserver.Spec.StatusInformHook != nil {
+		postdata, err := json.Marshal(appserver.Status)
+		if err != nil {
+			return
+		}
+		client := createHTTPClient()
+		client.Post(*appserver.Spec.StatusInformHook, "application/json", bytes.NewReader(postdata))
+	}
+}
+
 var (
 	serverOwnerKey = ".metadata.controller"
 	apiGVStr       = sugarv1.GroupVersion.String()
@@ -228,7 +269,7 @@ func (r *AppServerReconciler) createDeployment(ctx context.Context, server *suga
 									Value: server.Spec.ModelFile,
 								},
 								{
-									Name: "MODEL_FOLDER",
+									Name:  "MODEL_FOLDER",
 									Value: server.Spec.ModelFolder,
 								},
 								{

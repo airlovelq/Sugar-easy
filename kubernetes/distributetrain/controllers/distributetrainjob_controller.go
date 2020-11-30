@@ -17,8 +17,13 @@ limitations under the License.
 package controllers
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"net"
+	"net/http"
 	"strconv"
+	"time"
 
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/client-go/tools/record"
@@ -81,6 +86,7 @@ func (r *DistributeTrainJobReconciler) Reconcile(req ctrl.Request) (ctrl.Result,
 		// }
 	}
 	r.Log.Info("Get Distribute Train Job Success")
+	defer r.inform(ctx, disTrainJob)
 	// defer r.Update(ctx, disTrainJob)
 	// defer r.Status().Update(ctx, disTrainJob)
 
@@ -212,6 +218,42 @@ func (r *DistributeTrainJobReconciler) Reconcile(req ctrl.Request) (ctrl.Result,
 	}
 	r.Status().Update(ctx, disTrainJob)
 	return ctrl.Result{}, nil
+}
+
+const (
+	MaxIdleConns        int = 100
+	MaxIdleConnsPerHost int = 100
+	IdleConnTimeout     int = 90
+)
+
+// createHTTPClient for connection re-use
+func createHTTPClient() *http.Client {
+	client := &http.Client{
+		Transport: &http.Transport{
+			Proxy: http.ProxyFromEnvironment,
+			DialContext: (&net.Dialer{
+				Timeout:   60 * time.Second,
+				KeepAlive: 60 * time.Second,
+			}).DialContext,
+			MaxIdleConns:        MaxIdleConns,
+			MaxIdleConnsPerHost: MaxIdleConnsPerHost,
+			IdleConnTimeout:     time.Duration(IdleConnTimeout) * time.Second,
+		},
+
+		Timeout: 60 * time.Second,
+	}
+	return client
+}
+
+func (r *DistributeTrainJobReconciler) inform(ctx context.Context, job *sugarv1.DistributeTrainJob) {
+	if job.Spec.StatusInformHook != nil {
+		postdata, err := json.Marshal(job.Status)
+		if err != nil {
+			return
+		}
+		client := createHTTPClient()
+		client.Post(*job.Spec.StatusInformHook, "application/json", bytes.NewReader(postdata))
+	}
 }
 
 func (r *DistributeTrainJobReconciler) createService(ctx context.Context, job *sugarv1.DistributeTrainJob) error {

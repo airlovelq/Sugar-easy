@@ -101,6 +101,9 @@ type DistributeTrainJobSpec struct {
 
 	//
 	MaxTrials int32 `json:"maxtrials"`
+
+	//
+	StatusInformHook *string `json:"statusinformhook"`
 }
 
 // DistributeTrainJobStatusState 声明
